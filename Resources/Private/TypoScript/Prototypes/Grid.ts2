@@ -1,0 +1,47 @@
+# Abstract render definition for a grid column
+prototype(Pure.NodeTypes:Column) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Grid.html'
+	sectionName = 'gridColumn'
+	node = ${node}
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		nodeType.@process.columns = ${value + ' columns'}
+		endColumn = ${q(node).property('classEndColumn') ? 'end' : null}
+		gridSize = ${q(node).property('classGridSize') ? Array.join(q(node).property('classGridSize'), ' '): null}
+		gridOffset = ${q(node).property('classGridOffset') ? Array.join(q(node).property('classGridOffset'), ' ') : null}
+		gridPushPull = ${q(node).property('classGridPushPull') ? Array.join(q(node).property('classGridPushPull'), ' ') : null}
+		gridResetOrder = ${q(node).property('classGridResetOrder') ? Array.join(q(node).property('classGridResetOrder'), ' ') : null}
+		gridAlign = ${q(node).property('classGridAlign') ? Array.join(q(node).property('classGridAlign'), ' ') : null}
+	}
+	columnContent = TYPO3.Neos:ContentCollectionRenderer
+}
+
+# Basic implementation of a flexible GridColumns element,
+# not exposed directly but inherited by all specific Pure.NodeTypes:GridColumns* content elements
+prototype(Pure.NodeTypes:GridRowAbstract) < prototype(Pure.NodeTypes:Content) {
+	# When extra outer wrapper is rendered, we can't have there 'row' class.
+	# Instead we add 'grid-outer-wrapper' to make it easy to style it.
+	attributes.class.row = ${q(node).property('gridExtraWrapper') ? 'grid-outer-wrapper' : 'row'}
+	attributes.class.collapse = ${q(node).property('classCollapse') ? 'collapse' : null}
+
+	columns = TYPO3.TypoScript:Collection {
+		collection = ${q(node).children('[instanceof Pure.NodeTypes:Column]')}
+		itemRenderer = Pure.NodeTypes:Column
+		itemName = 'node'
+	}
+}
+
+prototype(Pure.NodeTypes:GridRow1Col) < prototype(Pure.NodeTypes:GridRowAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Grid.html'
+	sectionName = 'grid'
+}
+prototype(Pure.NodeTypes:GridRow2Col) < prototype(Pure.NodeTypes:GridRowAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Grid.html'
+	sectionName = 'grid'
+}
+prototype(Pure.NodeTypes:GridRow3Col) < prototype(Pure.NodeTypes:GridRowAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Grid.html'
+	sectionName = 'grid'
+}

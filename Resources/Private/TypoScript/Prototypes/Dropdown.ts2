@@ -1,0 +1,39 @@
+prototype(Pure.NodeTypes:DropdownAbstract) < prototype(Pure.NodeTypes:Content) {
+	attributes {
+		# ID *have to* be set, otherwise all other Dropdowns on the same page stop working ;/
+		id = ${q(node).property('customHtmlId') ? q(node).property('customHtmlId') : 'dd-'+q(node).property('_identifier')}
+		class {
+			base = 'f-dropdown'
+			size = ${q(node).property('dropdownSize')}
+		}
+		data-dropdown-content = ''
+		# Set auto-close to FALSE always in the back-end, to make it possible to edit, without the need to switch to Raw content mode.
+		aria-autoclose = ${node.context.workspace.name != 'live' ? 'false' : (q(node).property('autoClose') ? 'true' : 'false')}
+	}
+}
+
+
+prototype(Pure.NodeTypes:Dropdown) < prototype(Pure.NodeTypes:DropdownAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Dropdown.html'
+	sectionName = 'dropdown'
+
+	workspace = ${node.context.workspace.name}
+	text = ${String.replace(q(node).property('text'), '<ul>', '<ul' + this.attributes + '>')}
+
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'extra-wrapper-required-by-neos-backend'
+}
+
+
+prototype(Pure.NodeTypes:DropdownContent) < prototype(Pure.NodeTypes:DropdownAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Dropdown.html'
+	sectionName = 'dropdownContent'
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		content = ${q(node).property('dropdownPadding') ? 'content' : null}
+	}
+
+	content = TYPO3.Neos:ContentCollectionRenderer
+}

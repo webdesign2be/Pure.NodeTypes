@@ -1,0 +1,114 @@
+# Default child node for Pure.NodeTypes:GridColumnsX
+#
+# Note: This NodeType should be only created as a child nodes
+# of Pure.NodeTypes:GridColumnsX. Therefore it is attached to not available UI group.
+#
+'Pure.NodeTypes:Column':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+    - 'Pure.NodeTypes:AbstractDevCustomTag'
+    - 'Pure.NodeTypes:AbstractNodeTitle'
+  ui:
+    label: 'Grid Column'
+    icon: 'icon-th-large'
+    group: 'structure'
+    inspector:
+      groups:
+        grid:
+          label: 'Grid options'
+          position: 6
+  postprocessors:
+    GridColumnPropertiesPostprocesor:
+      postprocessor: 'Pure\NodeTypes\NodeTypePostprocessor\GridColumnNodeTypePostprocessor'
+
+
+# The last child node for Pure.NodeTypes:GridColumnsX with extra classEndColumn property
+'Pure.NodeTypes:ColumnEnd':
+  superTypes:
+    - 'Pure.NodeTypes:Column'
+  ui:
+    label: 'Grid Column (end)'
+  properties:
+    classEndColumn:
+      type: boolean
+      ui:
+        label: 'End column (for incomplete row)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'grid'
+          position: 11
+
+
+# Abstract NodeType for all Pure.NodeTypes:GridColumnsX
+'Pure.NodeTypes:GridRowAbstract':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'Pure.NodeTypes:AbstractDevCustomTag'
+    - 'Pure.NodeTypes:AbstractNodeTitle'
+  abstract: TRUE
+  ui:
+    icon: 'icon-columns'
+    inlineEditable: TRUE
+    group: 'structure'
+    inspector:
+      groups:
+        gridOptions:
+          label: 'Grid options'
+          position: 9
+  constraints:
+    nodeTypes:
+      'Pure.NodeTypes:Column': TRUE
+      '*': FALSE
+  properties:
+    gridExtraWrapper:
+      type: boolean
+      ui:
+        label: 'Add extra wrapper'
+        inspector:
+          group: 'gridOptions'
+    classCollapse:
+      type: boolean
+      ui:
+        label: 'Collapse columns'
+        inspector:
+          group: 'gridOptions'
+
+
+
+#
+# Actual GridColumns elements
+#
+'Pure.NodeTypes:GridRow1Col':
+  superTypes:
+    - 'Pure.NodeTypes:GridRowAbstract'
+  ui:
+    label: 'Grid row: 1 column'
+    icon: 'icon-laptop'
+  childNodes:
+    col1:
+      type: 'Pure.NodeTypes:Column'
+
+'Pure.NodeTypes:GridRow2Col':
+  superTypes:
+    - 'Pure.NodeTypes:GridRowAbstract'
+  ui:
+    label: 'Grid row: 2 columns'
+  childNodes:
+    col1:
+      type: 'Pure.NodeTypes:Column'
+    col2:
+      type: 'Pure.NodeTypes:ColumnEnd'
+
+'Pure.NodeTypes:GridRow3Col':
+  superTypes:
+    - 'Pure.NodeTypes:GridRowAbstract'
+  ui:
+    label: 'Grid row: 3 columns'
+  childNodes:
+    col1:
+      type: 'Pure.NodeTypes:Column'
+    col2:
+      type: 'Pure.NodeTypes:Column'
+    col3:
+      type: 'Pure.NodeTypes:ColumnEnd'

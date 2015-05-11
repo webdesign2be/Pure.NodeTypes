@@ -1,0 +1,6 @@
+#
+# Pure.NodeTypes:Content is a base for all Pure.NodeTypes:* components.
+# Add here properties/functionality which you don't want to add
+# to default TYPO3.Neos:Content.
+#
+prototype(Pure.NodeTypes:Content) < prototype(TYPO3.Neos:Content)

@@ -1,0 +1,27 @@
+'TYPO3.Neos:Document':
+  superTypes:
+    fragmentId: 'Pure.NodeTypes:AbstractNavFragmentId'
+  properties:
+    title:
+      ui:
+        inspector:
+          position: 10
+    _name:
+      ui:
+        inspector:
+          position: 20
+    uriPathSegment:
+      ui:
+        inspector:
+          position: 30
+    fragmentId:
+      ui:
+        label: 'URL #fragment id'
+        inspector:
+          group: 'document'
+          position: 40
+
+
+'TYPO3.Neos.NodeTypes:Page':
+  superTypes:
+    abstractCustomLook: 'Pure.NodeTypes:AbstractDevCustomLook'

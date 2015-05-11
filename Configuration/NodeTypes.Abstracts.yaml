@@ -1,0 +1,240 @@
+#
+# Mixin to define node title used as a node reference name
+# Note: it is based on 'TYPO3.Neos:Node.label' definition
+# which takes the 'title' property as a displayed node label.
+#
+'Pure.NodeTypes:AbstractNodeTitle':
+  abstract: TRUE
+  properties:
+    title:
+      type: string
+      ui:
+        label: 'Node title/label (for reference)'
+        inspector:
+          group: 'type'
+          position: 10
+
+#
+# Mixin with custom id / css class / inline css
+#
+'Pure.NodeTypes:AbstractDevBase':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        dev:
+          label: 'Advanced settings'
+          position: 95
+          tab: dev
+        devCode:
+          label: 'Custom code'
+          position: 95
+          tab: dev
+  properties:
+    customCssClass:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Element custom CSS class(es)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'dev'
+          position: 10
+          editor: Content/Inspector/Editors/TextFieldEditor
+          editorOptions:
+            placeholder: 'None'
+      validation:
+        regularExpression:
+          regularExpression: '/^[-a-z0-9_ ]+$/i'
+    customHtmlId:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Element custom HTML ID'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'dev'
+          position: 11
+          editor: Content/Inspector/Editors/TextFieldEditor
+          editorOptions:
+            placeholder: 'None'
+      validation:
+        regularExpression:
+          regularExpression: '/^[-a-z0-9_]+$/i'
+    customCssCode:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Element inline CSS'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'devCode'
+          position: 30
+          editor: Content/Inspector/Editors/TextFieldEditor
+          editorOptions:
+            placeholder: 'e.g. margin-top: 3rem'
+    customUserAttributes:
+      type: string
+      ui:
+        label: 'Element extra attributes (one per line)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'devCode'
+          position: 40
+          editor: 'Content/Inspector/Editors/TextAreaEditor'
+          editorOptions:
+            placeholder: 'e.g. custom-data-attribute=value'
+
+#
+# Configure predefined styles
+#
+'Pure.NodeTypes:AbstractDevCustomLook':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        devView:
+          position: 10
+          tab: dev
+          label: 'Custom look'
+  properties:
+    customLook:
+      type: string
+      ui:
+        label: 'Predefined style / look'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'devView'
+          position: 40
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'None'
+            allowEmpty: TRUE
+            values:
+              style-1:
+                label: 'Style 1'
+              style-2:
+                label: 'Style 2'
+              style-3:
+                label: 'Style 3'
+
+#
+# Mixin:
+# Semantic markup, choosing tag name for wrapper element
+#
+'Pure.NodeTypes:AbstractDevCustomTag':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        devSemantic:
+          label: 'Semantic Web'
+          position: 96
+          tab: dev
+  properties:
+    customTagName:
+      type: string
+      ui:
+        label: 'Element semantic tag type'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'devSemantic'
+          position: 50
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'Default / None'
+            allowEmpty: TRUE
+            values:
+              main:
+                label: 'MAIN'
+              header:
+                label: 'HEADER'
+              nav:
+                label: 'NAV'
+              section:
+                label: 'SECTION'
+              artile:
+                label: 'ARTICLE'
+              aside:
+                label: 'ASIDE'
+              footer:
+                label: 'FOOTER'
+
+#
+# Mixin:
+# Navigation: #fragment, magellan support
+#
+'Pure.NodeTypes:AbstractNavSailingType':
+  superTypes:
+    - 'Pure.NodeTypes:AbstractNavFragmentId'
+  abstract: TRUE
+  properties:
+    magellanSupport:
+      type: boolean
+      ui:
+        label: 'Magellan Sticky Nav support'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'sailingOptions'
+          position: 9
+
+#
+# Mixin for document/content nodes with 'fragmentId' property
+# which can be rendered as #fragmentId (document links)
+# or anchor <a name"fragmentId"></a>
+#
+'Pure.NodeTypes:AbstractNavFragmentId':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        sailingOptions:
+          label: 'Sailing options'
+          position: 96
+          tab: meta
+  properties:
+    fragmentId:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Fragment / section #name'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'sailingOptions'
+          position: 10
+          editor: Content/Inspector/Editors/TextFieldEditor
+          editorOptions:
+            placeholder: 'None'
+      validation:
+        'TYPO3.Neos/Validation/StringLengthValidator':
+          minimum: 1
+          maximum: 32
+        regularExpression:
+          regularExpression: '/^[a-z0-9\-]+$/i'
+
+#
+# Mixin for nav content elements, to add support for fixed/sticky
+#
+'Pure.NodeTypes:AbstractNavFixedSticky':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        menuPosition:
+          label: 'Menu positioning'
+          position: 31 # After Neos menu 'options' group
+  properties:
+    classNavFixed:
+      type: boolean
+      ui:
+        label: 'Fixed'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'menuPosition'
+    classNavSticky:
+      type: boolean
+      ui:
+        label: 'Sticky'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'menuPosition'

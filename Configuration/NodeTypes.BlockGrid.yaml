@@ -1,0 +1,17 @@
+'Pure.NodeTypes:BlockGrid':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+  ui:
+    label: 'Block Grid'
+    icon: 'icon-th-large'
+    group: 'structure'
+    inlineEditable: TRUE
+    inspector:
+      groups:
+        grid:
+          label: 'Block Grid settings'
+          position: 9
+  postprocessors:
+    ColumnPostprocesor:
+      postprocessor: 'Pure\NodeTypes\NodeTypePostprocessor\BlockGridNodeTypePostprocessor'

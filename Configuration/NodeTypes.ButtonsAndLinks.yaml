@@ -1,0 +1,311 @@
+# -----------------------------------------------------------------------------
+#
+# Button & Link - abstract
+#
+# -----------------------------------------------------------------------------
+'Pure.NodeTypes:ButtonLinkAbstract':
+  abstract: TRUE
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'Pure.NodeTypes:AbstractFontIcon'
+  ui:
+    icon: 'icon-sign-blank'
+    group: 'interactive'
+    inspector:
+      groups:
+        buttonOptions:
+          label: 'Button options'
+          position: 6
+        linkOptions:
+          label: 'Link options'
+          position: 7
+        revDropOptions:
+          label: 'Reveal & Dropdown options'
+          position: 8
+  constraints:
+    nodeTypes:
+      '*': FALSE # No children items allowed
+  properties:
+    label:
+      type: string
+      defaultValue: 'Link label'
+      ui:
+        label: 'Link label'
+        inlineEditable: TRUE
+        inspector:
+          group: 'linkOptions'
+        aloha:
+          format:
+            strong: TRUE
+            em: TRUE
+            u: TRUE
+            sub: TRUE
+            sup: TRUE
+            p: FALSE
+            h1: FALSE
+            h2: FALSE
+            h3: FALSE
+            h4: FALSE
+            h5: FALSE
+          link:
+            a: FALSE
+          alignment:
+            left: FALSE
+            center: FALSE
+            right: FALSE
+            justify: FALSE
+          formatlesspaste:
+            button: FALSE
+            formatlessPasteOption: TRUE
+            autoparagraph: FALSE
+    url:
+      type: string
+      ui:
+        label: 'Link (internal)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'linkOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/LinkEditor'
+    # TODO: 'urlExt' can be removed once LinkEditor is fixed and allows pasting custom/external links.
+    urlExt:
+      type: string
+      ui:
+        label: 'Link (external)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'linkOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/TextFieldEditor'
+          editorOptions:
+            placeholder: 'e.g. http://example.com/'
+    htmlTargetBlank:
+      type: string
+      ui:
+        label: 'Open in new window'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'linkOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'No'
+            allowEmpty: TRUE
+            values:
+              _blank:
+                label: 'Yes'
+    htmlTitle:
+      type: string
+      defaultValue: 'Link title'
+      ui:
+        label: 'Link title'
+        inspector:
+          group: 'linkOptions'
+    # Reveal Modal related properties.
+    htmlDataRevealId:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Reveal Modal ID'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'revDropOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/TextFieldEditor'
+          editorOptions:
+            placeholder: 'e.g. myModal'
+      validation:
+        regularExpression:
+          regularExpression: '/^[-a-z0-9_]+$/i'
+    # Dropdown related properties.
+    htmlDataDropdownId:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Dropdown ID'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'revDropOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/TextFieldEditor'
+          editorOptions:
+            placeholder: 'e.g. myDropdown'
+      validation:
+        regularExpression:
+          regularExpression: '/^[-a-z0-9_]+$/i'
+    dropdownHoverable:
+      type: boolean
+      ui:
+        label: 'Dropdown hoverable'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'revDropOptions'
+    dropdownDirection:
+      type: string
+      ui:
+        label: 'Dropdown direction'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'revDropOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'Default / Bottom'
+            allowEmpty: TRUE
+            values:
+              'top':
+                label: 'Top'
+              'right':
+                label: 'Right'
+              'bottom':
+                label: 'Bottom'
+              'left':
+                label: 'Left'
+
+
+# -----------------------------------------------------------------------------
+#
+# Link
+#
+# -----------------------------------------------------------------------------
+'Pure.NodeTypes:Link':
+  label: "${'Link: ' + q(node).property('label') + ' (' + node.name + ')'}"
+  superTypes:
+    - 'Pure.NodeTypes:ButtonLinkAbstract'
+  ui:
+    label: 'Link'
+    icon: 'icon-link'
+
+
+# -----------------------------------------------------------------------------
+#
+# Button
+#
+# -----------------------------------------------------------------------------
+'Pure.NodeTypes:Button':
+  label: "${'Button: ' + q(node).property('label') + ' (' + node.name + ')'}"
+  superTypes:
+    - 'Pure.NodeTypes:ButtonLinkAbstract'
+  ui:
+    label: 'Button'
+  properties:
+    label: # Override parent 'label'
+      defaultValue: 'Button'
+      ui:
+        label: 'Button label'
+        inspector:
+          group: 'buttonOptions'
+    classOptions:
+      type: array
+      ui:
+        label: 'Button options'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'buttonOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'Button options'
+            values:
+              tiny:
+                label: 'Size: Tiny'
+                group: 'Size'
+              small:
+                label: 'Size: Small'
+                group: 'Size'
+              large:
+                label: 'Size: Large'
+                group: 'Size'
+              success:
+                label: 'Appearance: Success'
+                group: 'Appearance'
+              secondary:
+                label: 'Appearance: Secondary'
+                group: 'Appearance'
+              alert:
+                label: 'Appearance: Alert'
+                group: 'Appearance'
+              info:
+                label: 'Appearance: Info'
+                group: 'Appearance'
+              disabled:
+                label: 'Appearance: Disabled'
+                group: 'Appearance'
+              radius:
+                label: 'Shape: Radius'
+                group: 'Shape'
+              round:
+                label: 'Shape: Round'
+                group: 'Shape'
+              # Form options: prefix/postfix when used together with form fields
+              prefix:
+                label: 'Form: Prefix button'
+                group: 'Form options'
+              postfix:
+                label: 'Form: Postfix button'
+                group: 'Form options'
+              dropdown:
+                label: 'Render as dropdown button'
+                group: 'Dropdown options'
+              split:
+                label: 'Render as split button'
+                group: 'Dropdown options'
+              expand:
+                label: 'Expanded button'
+                group: 'Misc'
+    buttonType:
+      type: string
+      ui:
+        label: 'Button type'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'buttonOptions'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            placeholder: 'Button type'
+            allowEmpty: TRUE
+            values:
+              button:
+                label: 'Type: Button'
+              submit:
+                label: 'Type: Submit'
+              reset:
+                label: 'Type: Reset'
+    renderAnchor:
+      type: boolean
+      ui:
+        label: 'Render button as an anchor (link)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'linkOptions'
+          position: 10
+
+# Button Group (list of buttons)
+'Pure.NodeTypes:ButtonGroup':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+  ui:
+    label: 'Button Group'
+    icon: 'icon-minus'
+    group: 'interactive'
+    inlineEditable: TRUE
+  constraints:
+    nodeTypes:
+      'Pure.NodeTypes:Button': TRUE
+      '*': FALSE
+  childNodes:
+    btn1:
+      type: 'Pure.NodeTypes:Button'
+
+# Button Bar (group of button groups)
+'Pure.NodeTypes:ButtonBar':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+  ui:
+    label: 'Button Bar'
+    icon: 'icon-minus'
+    group: 'interactive'
+    inlineEditable: TRUE
+  constraints:
+    nodeTypes:
+      'Pure.NodeTypes:ButtonGroup': TRUE
+      '*': FALSE
+  childNodes:
+    group1:
+      type: 'Pure.NodeTypes:ButtonGroup'
+    group2:
+      type: 'Pure.NodeTypes:ButtonGroup'

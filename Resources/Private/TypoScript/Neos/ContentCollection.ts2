@@ -1,0 +1,18 @@
+prototype(TYPO3.Neos:ContentCollection) {
+	# Due to (unknown?) reasons ContentCollection inherits 'attributes' properties
+	# set in the parent node (incl. tagName). Re-set those values
+	# so it renders default <div class="neos-contentcollection"></div> container,
+	# which will be removed in the @live workspace by wrapRemover.
+	tagName = 'div'
+	attributes.id = null
+	attributes.style = null
+	attributes.customUserAttributes = null
+
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'neos-contentcollection'
+}
+
+# Don't cache nested CCs, but cache CCs inside of Content.
+# This fix can be removed when this patch is merged: https://review.typo3.org/38847
+prototype(TYPO3.Neos:Content).prototype(TYPO3.Neos:ContentCollection).@cache.mode = 'cached'
+prototype(TYPO3.Neos:ContentCollection).prototype(TYPO3.Neos:ContentCollection).@cache.mode = 'embed'

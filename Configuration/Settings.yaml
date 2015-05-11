@@ -1,0 +1,67 @@
+TYPO3:
+  Neos:
+    typoScript:
+      autoInclude:
+        'Pure.NodeTypes': TRUE
+    nodeTypes:
+      groups:
+        interactive:
+          label: 'Interactive'
+        forms:
+          label: 'Form elements'
+        navigation:
+          label: 'Navigation'
+
+Pure:
+  NodeTypes:
+    gridSize: 12
+
+    devices:
+      small:
+        label: 'Small device'
+      medium:
+        label: 'Medium device'
+      large:
+        label: 'Large device'
+
+    # @see AbstractGridNodeTypePostprocessor which utilizes these settings
+    # to generate required properties for Pure.NodeTypes:Column node type
+    gridSettings:
+      size:
+        label: 'Grid column width'
+        cssClassSuffixes: [ '-' ]         # DEVICE-X, eg: small-X, medium-Y, large-Z
+        appliedPerColumn: true
+        uiInspectorGroup: grid
+      offset:
+        label: 'Grid column offset'
+        cssClassSuffixes: [ '-offset-' ]  # DEVICE-offset-X, eg: small-offset-X, medium-offset-Y, large-offset-Z
+        appliedPerColumn: true
+        uiInspectorGroup: grid
+      pushPull:
+        label: 'Grid column push / pull'
+        cssClassSuffixes: [ '-push-', '-pull-' ]    # DEVICE-push-X, eg: small-push-X, medium-push-Y, large-push-Z
+        appliedPerColumn: true
+        uiInspectorGroup: grid
+      align:
+        label: 'Grid column align'
+        cssClassSuffixes: [ '-centered', '-uncentered' ] # e.g. small-centered, large-centered
+        appliedPerColumn: false
+        uiInspectorGroup: grid
+      resetOrder:
+        label: 'Grid column reset order'
+        cssClassSuffixes: [ '-reset-order' ]  # e.g. small-reset-order
+        appliedPerColumn: false
+        uiInspectorGroup: grid
+
+    # @see AbstractGridNodeTypePostprocessor which utilizes these settings
+    # to generate required properties for Pure.NodeTypes:BlockGrid node type
+    blockGridSettings:
+      itemsPerRow:
+        label: 'Number of items per row'
+        cssClassSuffixes: [ '-block-grid-' ]    # DEVICE-block-grid-X, eg: small-block-grid-X, medium-block-grid-Y, large-block-grid-Z
+        appliedPerColumn: true
+        uiInspectorGroup: grid
+        defaults: # default values per-device
+          - small-block-grid-1
+          - medium-block-grid-2
+          - large-block-grid-3

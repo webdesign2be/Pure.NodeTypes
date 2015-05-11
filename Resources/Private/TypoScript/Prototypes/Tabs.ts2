@@ -1,0 +1,64 @@
+prototype(Pure.NodeTypes:Tabs) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Tabs.html'
+	sectionName = 'tabs'
+
+	tabsNavContent = TYPO3.TypoScript:Tag {
+		tagName = 'ul'
+		attributes.data-tab = ''
+		attributes.class = TYPO3.TypoScript:RawArray {
+			base = 'tabs'
+			vertical = ${q(node).property('vertical') ? ' vertical' : null}
+		}
+		content = TYPO3.TypoScript:Collection {
+			collection = ${q(node).children('[instanceof Pure.NodeTypes:TabItem]')}
+			itemRenderer = Pure.NodeTypes:TabNavItem
+			itemName = 'node'
+		}
+	}
+
+	# Attributes around div.tabs-content
+	extraAttributes.class.base = 'tabs-content'
+	extraAttributes.class.vertical = ${q(node).property('vertical') ? 'vertical' : null}
+
+	tabsContent = TYPO3.TypoScript:Collection {
+		collection = ${q(node).children('[instanceof Pure.NodeTypes:TabItem]')}
+		itemRenderer = Pure.NodeTypes:TabContentItem
+		itemName = 'node'
+	}
+
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'm12-foundation-tabs'
+}
+
+prototype(Pure.NodeTypes:TabNavItem) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Tabs.html'
+	sectionName = 'tabNavItem'
+
+	# Attributes for each LI element
+	attributes.class {
+		tabTitle = 'tab-title'
+		active = ${q(node).property('activeTab') ? 'active' : null}
+	}
+
+	title = ${q(node).property('title')}
+	href = ${q(node).property('customHtmlId') ? q(node).property('customHtmlId') : ('tab-' + q(node).property('_identifier'))}
+
+	# Unset contentElementWrapping, as tabNavItems don't need it
+	@process.contentElementWrapping >
+}
+
+# Abstract render definition for a grid column
+prototype(Pure.NodeTypes:TabContentItem) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Tabs.html'
+	sectionName = 'tabContentItem'
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		base = 'content'
+		active = ${q(node).property('activeTab') ? 'active' : null}
+	}
+	attributes.id = ${q(node).property('customHtmlId') ? q(node).property('customHtmlId') : ('tab-' + q(node).property('_identifier'))}
+
+	content = TYPO3.Neos:ContentCollectionRenderer
+}

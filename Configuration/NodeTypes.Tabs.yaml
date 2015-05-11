@@ -1,0 +1,67 @@
+# -----------------------------------------------------------------------------
+# Tabs
+# -----------------------------------------------------------------------------
+'Pure.NodeTypes:TabItem':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+  ui:
+    label: 'Tab Item'
+    icon: 'icon-angle-right'
+    inspector:
+      groups:
+        tabSettings:
+          label: 'Tab item options'
+          position: 9
+  properties:
+    title:
+      type: string
+      defaultValue: 'Tab'
+      ui:
+        label: 'Tab title'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'tabSettings'
+          position: 10
+    activeTab:
+      type: boolean
+      ui:
+        label: 'Make an active tab'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'tabSettings'
+          position: 20
+
+
+'Pure.NodeTypes:Tabs':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'Pure.NodeTypes:AbstractDevCustomTag'
+  ui:
+    label: 'Tabs'
+    icon: 'icon-double-angle-right'
+    group: 'structure'
+    inlineEditable: TRUE
+    inspector:
+      groups:
+        tabSettings:
+          label: 'Tab settings'
+          position: 9
+  constraints:
+    nodeTypes:
+      'Pure.NodeTypes:TabItem': TRUE
+      '*': FALSE
+  childNodes:
+    tab1:
+      type: 'Pure.NodeTypes:TabItem'
+    tab2:
+      type: 'Pure.NodeTypes:TabItem'
+  properties:
+    vertical:
+      type: boolean
+      ui:
+        label: 'Vertical tabs'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'tabSettings'
+          position: 10

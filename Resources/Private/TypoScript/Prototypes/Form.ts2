@@ -1,0 +1,118 @@
+prototype(Pure.NodeTypes:Form) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'form'
+
+	actionUri = ${q(node).property('actionUri') ? q(node).property('actionUri') : '#'}
+	methodType = ${q(node).property('methodType') == 'get' ? 'get' : 'post'}
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+	}
+	content = TYPO3.Neos:ContentCollectionRenderer
+}
+
+
+# Abstract prototype for all form elements.
+prototype(Pure.NodeTypes:FormElementAbstract) < prototype(Pure.NodeTypes:Content) {
+	@override.inputId = ${q(node).property('customHtmlId') ? q(node).property('customHtmlId') : 'field-'+q(node).property('_identifier')}
+	@override.errorState = ${q(node).property('errorState')}
+
+	# Get 'name' attribute. If not provided, set to $inputId
+	inputNameAttr = ${q(node).property('inputName') ? q(node).property('inputName') : inputId}
+
+	# These attributes are added to input, select, textarea elements.
+	attributes.class.error = ${errorState ? 'error' : null}
+	attributes.id          = ${inputId}
+	attributes.placeholder = ${q(node).property('inputPlaceholder') ? q(node).property('inputPlaceholder') : null}
+	attributes.checked     = ${q(node).property('inputChecked') ? '' : null}
+	attributes.required    = ${q(node).property('inputRequired') ? '' : null}
+	attributes.readonly    = ${q(node).property('inputReadOnly') ? '' : null}
+	attributes.disabled    = ${q(node).property('inputDisabled') ? '' : null}
+	attributes.rows        = ${q(node).property('rows') ? q(node).property('rows') : null}
+
+	# These attributes are added to label element.
+	extraAttributes.class.error = ${errorState ? 'error' : null}
+	extraAttributes.class.labelCssClass = ${q(node).property('labelCssClass')}
+	extraAttributes.for = ${inputId}
+	extraAttributes.style = ${q(node).property('labelCssCode') ? q(node).property('labelCssCode') : null}
+}
+
+
+# Fieldset with legend.
+prototype(Pure.NodeTypes:FormFieldset) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formFieldset'
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+	}
+
+	content = TYPO3.Neos:ContentCollectionRenderer
+}
+
+
+# Label.
+prototype(Pure.NodeTypes:FormLabel) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formLabel'
+
+	attributes.class.inline = ${q(node).property('labelInlined') ? 'inline' : null}
+}
+
+
+# Text based form input.
+prototype(Pure.NodeTypes:FormInput) < prototype(Pure.NodeTypes:FormElementAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInput'
+	inputNature = 'textfield'
+}
+
+
+# Pre/postfix.
+prototype(Pure.NodeTypes:FormInputPrePostfix) < prototype(Pure.NodeTypes:Content) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInputPrePostfix'
+
+	attributes.class.fixType = ${q(node).property('fixType')}
+
+	# Set default tagName to SPAN
+	tagName.@process.default = ${value ? value : 'span'}
+}
+
+
+# Checkbox input.
+prototype(Pure.NodeTypes:FormInputCheckbox) < prototype(Pure.NodeTypes:FormElementAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInput-checkbox-radio'
+	inputNature = 'checkbox'
+}
+
+
+# Radio input.
+prototype(Pure.NodeTypes:FormInputRadio) < prototype(Pure.NodeTypes:FormElementAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInput-checkbox-radio'
+	inputNature = 'radio'
+}
+
+
+# Select input.
+prototype(Pure.NodeTypes:FormInputSelect) < prototype(Pure.NodeTypes:FormElementAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInput'
+	inputNature = 'select'
+
+	selectOptions = Pure.NodeTypes:ValueOptionsList {
+		value = ${q(node).property('selectOptions')}
+	}
+}
+
+
+# Textarea input.
+prototype(Pure.NodeTypes:FormInputTextarea) < prototype(Pure.NodeTypes:FormElementAbstract) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/Form.html'
+	sectionName = 'formInput'
+	inputNature = 'textarea'
+}

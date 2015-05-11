@@ -1,0 +1,461 @@
+# -----------------------------------------------------------------------------
+#
+# Form
+#
+# -----------------------------------------------------------------------------
+
+#
+# remove the form nodeType
+#
+'TYPO3.Neos.NodeTypes:Form': []
+
+# <form> element.
+'Pure.NodeTypes:Form':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+  ui:
+    label: 'Form container'
+    icon: 'icon-th-list'
+    group: 'forms'
+    inlineEditable: TRUE
+    inspector:
+      groups:
+        formSettings:
+          label: 'Form settings'
+          position: 5
+  constraints:
+    nodeTypes:
+      '*': FALSE
+      'Pure.NodeTypes:FormFieldset': TRUE
+      'Pure.NodeTypes:FormLabel': TRUE
+      'Pure.NodeTypes:FormInput': TRUE
+      'Pure.NodeTypes:FormInputPrePostfix': TRUE
+      'Pure.NodeTypes:FormInputCheckbox': TRUE
+      'Pure.NodeTypes:FormInputRadio': TRUE
+      'Pure.NodeTypes:FormInputSelect': TRUE
+      'Pure.NodeTypes:FormInputTextarea': TRUE
+      'Pure.NodeTypes:Button': TRUE
+  properties:
+    actionUri:
+      type: string
+      ui:
+        label: 'Action URL'
+        reloadIfChanged: FALSE
+        inspector:
+          group: 'formSettings'
+    methodType:
+      type: string
+      defaultValue: 'get'
+      ui:
+        label: 'Submit method'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formSettings'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              post:
+                label: 'POST'
+              get:
+                label: 'GET'
+
+# Abstract NodeType for all form inputs (including buttons).
+'Pure.NodeTypes:FormElementAbstract':
+  abstract: TRUE
+  superTypes:
+    - 'TYPO3.Neos:Content'
+  ui:
+    group: 'forms'
+    inspector:
+      groups:
+        formInputSettings:
+          label: 'Form element settings'
+          position: 5
+        dev:
+          label: 'Advanced form element settings'
+          position: 9
+  properties:
+    inputName:
+      type: string
+      ui:
+        label: 'Element name attribute'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'dev'
+          position: 10
+          editorOptions:
+            placeholder: 'None'
+    inputValue:
+      type: string
+      ui:
+        label: 'Field value'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 20
+    inputRequired:
+      type: boolean
+      ui:
+        label: 'Required'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 50
+    inputReadOnly:
+      type: boolean
+      ui:
+        label: 'Read only'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 60
+    inputDisabled:
+      type: boolean
+      ui:
+        label: 'Disabled'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 70
+    errorTxt:
+      type: string
+      defaultValue: 'Invalid entry'
+      ui:
+        inlineEditable: TRUE
+        aloha:
+          'format': []
+    errorState:
+      type: boolean
+      ui:
+        label: 'Mark as an error state'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 80
+
+
+# Abstract for all form elements that need <label> element.
+'Pure.NodeTypes:FormInputLabelAbstract':
+  abstract: TRUE
+  ui:
+    inspector:
+      groups:
+        formLabelSettings:
+          label: 'Form label settings'
+          position: 6
+  properties:
+    inputLabel:
+      type: string
+      defaultValue: 'Label'
+      ui:
+        inlineEditable: TRUE
+        inspector:
+          group: 'formLabelSettings'
+          position: 5
+        aloha:
+          format:
+            strong: TRUE
+            em: TRUE
+            u: TRUE
+            sub: TRUE
+            sup: TRUE
+            p: FALSE
+            h1: FALSE
+            h2: FALSE
+            h3: FALSE
+            h4: FALSE
+            h5: FALSE
+          link:
+            a: FALSE
+          alignment:
+            left: FALSE
+            center: FALSE
+            right: FALSE
+            justify: FALSE
+          formatlesspaste:
+            button: FALSE
+            formatlessPasteOption: TRUE
+            autoparagraph: FALSE
+    inputLabelEnable:
+      type: boolean
+      defaultValue: TRUE
+      ui:
+        label: 'Enable input label'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formLabelSettings'
+          position: 10
+
+
+# Abstract for all form elements that need placeholder property.
+'Pure.NodeTypes:FormInputPlaceholderAbstract':
+  abstract: TRUE
+  properties:
+    inputPlaceholder:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'Placeholder'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 25
+          editorOptions:
+            placeholder: 'Input placeholder'
+
+
+# Abstract for form elements that need "checked" property.
+'Pure.NodeTypes:FormInputCheckedAbstract':
+  abstract: TRUE
+  properties:
+    inputChecked:
+      type: boolean
+      ui:
+        label: 'Checked state'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+
+
+# Fieldset.
+'Pure.NodeTypes:FormFieldset':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+  ui:
+    label: 'Form fieldset'
+    icon: 'icon-check-empty'
+    group: 'forms'
+    inspector:
+      groups:
+        formInputSettings:
+          label: 'Form input settings'
+          position: 9
+  properties:
+    legendTxt:
+      type: string
+      defaultValue: 'Legend'
+      ui:
+        inlineEditable: TRUE
+        aloha:
+          'format': []
+    showLegend:
+      type: boolean
+      defaultValue: TRUE
+      ui:
+        label: 'Show legend'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+
+
+# <label> element.
+'Pure.NodeTypes:FormLabel':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+  ui:
+    label: 'Form label'
+    icon: 'icon-paperclip'
+    group: 'forms'
+    inspector:
+      groups:
+        dev:
+          label: 'Advanced label settings'
+          position: 9
+  properties:
+    htmlFor:
+      type: string
+      defaultValue: ''
+      ui:
+        label: 'For attribute'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formLabelSettings'
+          editorOptions:
+            placeholder: 'Type in an ID of relevant input field.'
+    labelInlined:
+      type: boolean
+      ui:
+        label: 'Inline (vertical centering)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formLabelSettings'
+    # Hide inherited 'inputLabelEnable' property as it's not relevant here
+    inputLabelEnable:
+      ui:
+        inspector:
+          group: 'na'
+    # Hide custom css class / inline code - this is main LABEL element, therefore
+    # properties available in TYPO3.Neos:Content (inherited from Pure.NodeTypes:AbstractDevBase)
+    # should be used.
+    labelCssClass:
+      ui:
+        inspector:
+          group: 'na'
+    labelCssCode:
+      ui:
+        inspector:
+          group: 'na'
+
+
+# NodeType for text based <input> fields, e.g. text, password, email, number etc.
+'Pure.NodeTypes:FormInput':
+  superTypes:
+    - 'Pure.NodeTypes:FormElementAbstract'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+    - 'Pure.NodeTypes:FormInputPlaceholderAbstract'
+  ui:
+    label: 'Text field'
+    icon: 'icon-pencil'
+  properties:
+    inputType:
+      type: string
+      defaultValue: 'text'
+      ui:
+        label: 'Choose input type'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          position: 5
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              text:
+                label: 'Text'
+              number:
+                label: 'Number'
+              password:
+                label: 'Password'
+              email:
+                label: 'Email'
+              tel:
+                label: 'Telephone'
+              url:
+                label: 'Url'
+              search:
+                label: 'Search'
+              range:
+                label: 'Range'
+              date:
+                label: 'Date'
+              time:
+                label: 'Time'
+              color:
+                label: 'Color'
+
+
+# Pre/postfix element.
+'Pure.NodeTypes:FormInputPrePostfix':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'Pure.NodeTypes:AbstractDevCustomTag'
+  ui:
+    label: 'Input Pre/Postfix'
+    icon: 'icon-check-empty'
+    group: 'forms'
+    inspector:
+      groups:
+        formInputSettings:
+          label: 'Form input settings'
+          position: 9
+  properties:
+    text:
+      type: string
+      defaultValue: 'XYZ'
+      ui:
+        inlineEditable: TRUE
+    fixType:
+      type: string
+      defaultValue: 'postfix'
+      ui:
+        label: 'Choose fix type'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          editor: 'TYPO3.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              prefix:
+                label: 'Prefix'
+              postfix:
+                label: 'Postfix'
+    # Allow overridding tagName - just to have an ability to quickly switch it to BUTTON.
+    # Otherwise we should advise users to use feature-rich button/link element.
+    customTagName:
+      ui:
+        inspector:
+          editorOptions:
+            placeholder: 'Default / SPAN'
+            allowEmpty: TRUE
+            values:
+              span:
+                label: 'SPAN'
+              button:
+                label: 'BUTTON'
+
+# NodeType for checkbox input.
+'Pure.NodeTypes:FormInputCheckbox':
+  superTypes:
+    - 'Pure.NodeTypes:FormElementAbstract'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+    - 'Pure.NodeTypes:FormInputCheckedAbstract'
+  ui:
+    label: 'Checkbox field'
+    icon: 'icon-check'
+
+
+# NodeType for radio input.
+'Pure.NodeTypes:FormInputRadio':
+  superTypes:
+    - 'Pure.NodeTypes:FormElementAbstract'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+    - 'Pure.NodeTypes:FormInputCheckedAbstract'
+  ui:
+    label: 'Radio field'
+    icon: 'icon-circle-blank'
+
+
+# NodeType for select.
+'Pure.NodeTypes:FormInputSelect':
+  superTypes:
+    - 'Pure.NodeTypes:FormElementAbstract'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+  ui:
+    label: 'Select field'
+    icon: 'icon-chevron-down'
+  properties:
+    selectOptions:
+      type: string
+      ui:
+        label: 'Select options (one per line)'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'formInputSettings'
+          editor: Content/Inspector/Editors/TextAreaEditor
+          editorOptions:
+            placeholder: |
+              e.g.: value = Label
+              or: Just Label
+            rows: 10
+
+
+# NodeType for textarea.
+'Pure.NodeTypes:FormInputTextarea':
+  superTypes:
+    - 'Pure.NodeTypes:FormElementAbstract'
+    - 'Pure.NodeTypes:FormInputLabelAbstract'
+  ui:
+    label: 'Textarea'
+    icon: 'icon-align-left'
+  properties:
+    rows:
+      type: integer
+      defaultValue: 2
+      ui:
+        label: 'Rows'
+        inspector:
+          group: 'formLabelSettings'
+          editorOptions:
+            placeholder: 'Number of rows in textarea'

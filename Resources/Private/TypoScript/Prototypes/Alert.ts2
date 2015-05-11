@@ -1,0 +1,10 @@
+prototype(Pure.NodeTypes:Alert) < prototype(Pure.NodeTypes:Content) {
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		base = 'alert-box'
+		appearance = ${q(node).property('classAppearance') ? q(node).property('classAppearance') : null}
+	}
+
+	alertContent = TYPO3.Neos:ContentCollectionRenderer
+}

@@ -1,0 +1,11 @@
+'Pure.NodeTypes:Container':
+  superTypes:
+    - 'TYPO3.Neos:Content'
+    - 'TYPO3.Neos:ContentCollection'
+    - 'Pure.NodeTypes:AbstractDevCustomTag'
+    - 'Pure.NodeTypes:AbstractNodeTitle'
+  ui:
+    label: 'Container'
+    icon: 'icon-hdd'
+    group: 'structure'
+    inlineEditable: TRUE

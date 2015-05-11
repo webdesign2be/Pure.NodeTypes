@@ -1,0 +1,8 @@
+prototype(Pure.NodeTypes:Container) < prototype(Pure.NodeTypes:Content) {
+	node = ${node}
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+	}
+	content = TYPO3.Neos:ContentCollectionRenderer
+}

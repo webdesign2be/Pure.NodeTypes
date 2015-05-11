@@ -1,0 +1,10 @@
+prototype(Pure.NodeTypes:RevealModal) < prototype(Pure.NodeTypes:Content) {
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		base = 'reveal-modal'
+		size = ${q(node).property('classRevealSize') ? q(node).property('classRevealSize') : null}
+	}
+
+	revealModalContent = TYPO3.Neos:ContentCollectionRenderer
+}

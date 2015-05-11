@@ -1,0 +1,1 @@
+prototype(Pure.NodeTypes:ValueOptionsList).@class = 'Pure\\NodeTypes\\TypoScript\\ValueOptionsListImplementation'

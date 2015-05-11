@@ -1,0 +1,89 @@
+# Override TYPO3.Neos:Menu
+prototype(Pure.NodeTypes:Menu) < prototype(TYPO3.Neos.NodeTypes:Menu) {
+	@override.isDocumentContext = ${q(node).is('[instanceof TYPO3.Neos:Document]')}
+
+	# magellanSupport is set via @override in the parent scope.
+	# When in document context, use that variable - otherwise read node property.
+	magellanSupport = ${isDocumentContext ? magellanSupport : q(node).property('magellanSupport')}
+	@override.magellanSupport = ${this.magellanSupport}
+
+	extraAttributes.class.fixed  = ${q(node).property('classNavFixed')  ? 'fixed' : null}
+	extraAttributes.class.sticky = ${q(node).property('classNavSticky') ? 'sticky' : null}
+	extraAttributes.data-magellan-expedition = ${magellanSupport ? 'fixed' : null}
+}
+
+prototype(Pure.NodeTypes:TopBar) < prototype(Pure.NodeTypes:Menu) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/NodeTypes/TopBar.html'
+	node = ${node}
+
+	# Set nodeType class manually - othwerise it inherits page class when inserted from TS
+	attributes.class.nodeType = 'm12-foundation-topbar'
+	attributes.class.base = 'top-bar'
+
+	extraAttributes.class.gridContained = ${q(node).property('topBarGridContained') ? 'contain-to-grid' : null}
+
+	topBarTitle = ${isDocumentContext ? q(site).property('title') : q(node).property('topBarTitle')}
+	sectionAlign = ${q(node).property('classSectionAlign') ? q(node).property('classSectionAlign') : 'left'}
+}
+
+prototype(Pure.NodeTypes:SubNavLive) < prototype(Pure.NodeTypes:Menu) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/Neos/Menu.html'
+	node = ${node}
+
+	# Set nodeType class manually - othwerise it inherits page class when inserted from TS
+	attributes.class.nodeType = 'm12-foundation-subnav'
+	attributes.class.base = 'sub-nav'
+	tag = 'dl'
+	itemTag = 'dd'
+}
+
+prototype(Pure.NodeTypes:SideNavLive) < prototype(Pure.NodeTypes:Menu) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/Neos/Menu.html'
+	node = ${node}
+
+	# Set nodeType class manually - othwerise it inherits page class when inserted from TS
+	attributes.class.nodeType = 'm12-foundation-sidenav'
+	attributes.class.base = 'side-nav'
+
+	tag = 'ul'
+	itemTag = 'li'
+}
+
+prototype(Pure.NodeTypes:NavItem) < prototype(Pure.NodeTypes:Content) {
+	isSubNav  = ${String.endsWith(q(node).parent().parent().property('_nodeType.name'), 'SubNav')}
+	isDivider = ${q(node).property('classDivider') ? true : false}
+
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		active = ${q(node).property('classActive') ? 'active' : null}
+		divider = ${q(node).property('classDivider') ? 'divider' : null}
+	}
+	attributesHref = ${q(node).property('htmlHref') ? String.trim(q(node).property('htmlHref')) : null}
+
+	navItemContent = TYPO3.Neos:ContentCollectionRenderer
+
+	tag = ${this.isSubNav ? 'dd' : 'li'}
+}
+
+prototype(Pure.NodeTypes:SideNav) < prototype(Pure.NodeTypes:Content) {
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		base = 'side-nav'
+	}
+
+	sideNavContent = TYPO3.Neos:ContentCollectionRenderer
+}
+
+prototype(Pure.NodeTypes:SubNav) < prototype(Pure.NodeTypes:Content) {
+	attributes.class {
+		contentcollection = 'neos-contentcollection'
+		contentcollection.@if.isBackend = ${node.context.workspace.name != 'live'}
+		base = 'sub-nav'
+	}
+
+	subNavTitle = ${q(node).property('title') ? q(node).property('title') : null}
+
+	subNavContent = TYPO3.Neos:ContentCollectionRenderer
+}

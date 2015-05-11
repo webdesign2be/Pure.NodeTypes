@@ -1,0 +1,31 @@
+prototype(TYPO3.Neos.NodeTypes:Headline) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/Neos/Headline.html'
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'typo3-neos-nodetypes-headline'
+}
+
+
+prototype(TYPO3.Neos.NodeTypes:Text) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/Neos/Text.html'
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'typo3-neos-nodetypes-text'
+}
+
+
+prototype(TYPO3.Neos.NodeTypes:Image) {
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'typo3-neos-nodetypes-image'
+}
+
+
+prototype(TYPO3.Neos.NodeTypes:TextWithImage) {
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'typo3-neos-nodetypes-textwithimage'
+}
+
+
+prototype(TYPO3.Neos.NodeTypes:Html) {
+	templatePath = 'resource://Pure.NodeTypes/Private/Templates/Neos/Html.html'
+	@process.wrapRemover = Pure.Utils:WrapRemover
+	@process.wrapRemover.wrapperClass = 'typo3-neos-nodetypes-html'
+}

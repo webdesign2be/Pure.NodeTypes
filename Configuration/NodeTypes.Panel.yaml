@@ -1,0 +1,23 @@
+# 'Pure.NodeTypes:Panel':
+#   superTypes:
+#     - 'TYPO3.Neos:Content'
+#     - 'Pure.NodeTypes:AbstractDevCustomTag'
+#     - 'Pure.NodeTypes:AbstractNavSailingType'
+#     - 'TYPO3.Neos:ContentCollection'
+#   ui:
+#     label: 'Panel'
+#     icon: 'icon-check-empty'
+#     inlineEditable: TRUE
+#     inspector:
+#       groups:
+#         options:
+#           label: 'Panel options'
+#           position: 9
+#   properties:
+#     classCallout:
+#       type: boolean
+#       ui:
+#         label: 'Style: callout'
+#         reloadIfChanged: TRUE
+#         inspector:
+#           group: 'options'

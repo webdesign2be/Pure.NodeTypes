@@ -1,0 +1,8 @@
+# Custom TypoScript objects
+include: TypoScriptObjects/*
+
+# TYPO3 Neos objects amends
+include: Neos/*
+
+# Pure.NodeTypes prototypes
+include: Prototypes/*

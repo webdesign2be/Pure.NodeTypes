@@ -1,0 +1,75 @@
+'TYPO3.Neos:Hidable':
+  properties:
+    _hidden:
+      ui:
+        label: 'Hide (don''t render at all)'
+
+
+# Move some Neos NodeTypes to non-existing group
+# so they're not visible by default.
+'TYPO3.Neos.NodeTypes:Menu':
+  ui:
+    group: 'na'
+    inspector:
+      groups:
+        options:
+          label: 'Menu options'
+  properties:
+    # Start level: default 1st level of the site
+    startLevel:
+      defaultValue: 1
+
+
+'TYPO3.Neos.NodeTypes:TwoColumn':
+  abstract: true
+'TYPO3.Neos.NodeTypes:ThreeColumn':
+  abstract: true
+'TYPO3.Neos.NodeTypes:FourColumn':
+  abstract: true
+
+
+'TYPO3.Neos.NodeTypes:Headline':
+  superTypes:
+    abstractDevCustomTag: 'Pure.NodeTypes:AbstractDevCustomTag'
+    abstractFontIcon: 'Pure.NodeTypes:AbstractFontIcon'
+  properties:
+    'title':
+      ui:
+        aloha:
+          'format':
+            'p': FALSE
+            'h4': TRUE
+            'h5': TRUE
+            'h6': TRUE
+
+'TYPO3.Neos.NodeTypes:Text':
+  superTypes:
+    abstractDevCustomTag: 'Pure.NodeTypes:AbstractDevCustomTag'
+    abstractFontIcon: 'Pure.NodeTypes:AbstractFontIcon'
+  properties:
+    text:
+      ui:
+        aloha:
+          format:
+            h4: TRUE
+            h5: TRUE
+            h6: TRUE
+
+'TYPO3.Neos.NodeTypes:Html':
+  superTypes:
+    abstractDevCustomTag: 'Pure.NodeTypes:AbstractDevCustomTag'
+
+'TYPO3.Neos.NodeTypes:ContentReferences':
+  ui:
+    # Experimental! Make all referenced nodes inline editable.
+    # This might be confusing as user might unintentionally edit
+    # referenced content (which might reside on another pages etc).
+    inlineEditable: TRUE
+
+'TYPO3.Neos:ContentCollection':
+  constraints:
+    nodeTypes:
+      'Pure.NodeTypes:Column': FALSE # Pure.NodeTypes:Column makes sense only inside Pure.NodeTypes:GridRow*
+      'Pure.NodeTypes:TabItem': FALSE # Pure.NodeTypes:TabItem makes sense only inside Pure.NodeTypes:Tabs*
+      'Pure.NodeTypes:AccordionItem': FALSE # Pure.NodeTypes:AccordionItem makes sense only inside Pure.NodeTypes:Accordion
+      '*': TRUE
